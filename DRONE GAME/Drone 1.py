@@ -1,3 +1,4 @@
+#Alexandra's 1st failed attempt
 import pygame, sys
 pygame.init()
 screen=pygame.display.set_mode([1500, 1000])
