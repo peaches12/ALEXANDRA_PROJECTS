@@ -23,9 +23,29 @@ def draw_grid(PS):
 def is_word_in_grid(palabra, PlaySpot):
     '''determines if the word is 'in' the grid'''
     #first letter indexes (all of them)
-    FirstIndexes = first_letter_indexes(palabra, PlaySpot)
-    print("How many times does " + str(palabra[0]) + " occur?: " + str(FirstIndexes) + " times.")
-
+    Numbers = list(PlaySpot.keys())
+    Letters = list(PlaySpot.values())
+    firstLetters = first_letter_indexes(palabra, PlaySpot)
+    print("How many times does " + str(palabra[0]) + " occur?: " + str(firstLetters) + " times.")
+    #if the first letter isn't even in the grid
+    if len(firstLetters) == 0:
+        return False
+    addIt = [-6, -5, -4, -1, 1, 4, 5, 6]
+    for y in range(1, len(firstLetters)):              #don't look for the first letter
+        Loopletter = palabra[y]                        #letter we're checking for
+        newIndexList = []                              #the new indexes for the next letter
+        for index in firstLetters:                     #check around each letter for the consecutive letter
+            for addend in addIt:                       #do this for all the addends in AddIt
+                newOne = index + addend                #find index of value above/below/diagonally across current value
+                if newOne in Numbers:                  #if the index is actually in the list of approved values
+                    if Letters[newOne] == Loopletter:  #if the index corresponds w/ the correct letter
+                        if newOne not in newIndexList: #no index repeats in the list
+                            newIndexList.append(newOne)#append newOne
+        firstLetters = newIndexList
+        if len(newIndexList) == 0:                     #if the next letter isn't 1 unit away from the current one 
+            return False                               #the word isn't in the grid
+    #if the word occurs at least once
+    return True                                             
         
                                        
 def first_letter_indexes(mon, PS):
