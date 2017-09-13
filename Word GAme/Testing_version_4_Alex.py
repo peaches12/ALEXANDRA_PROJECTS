@@ -1,4 +1,4 @@
-import random
+import random, sys
 ''' 1  2  3   4  5 6
     7  8  9  10 11 12
     13 14 15 16 17 18
@@ -29,7 +29,7 @@ def is_word_in_grid(palabra, PlaySpot):
     if len(firstLetters) == 0:
         return False
     addIt = [-7, -6, -5, -1, 1, 5, 6, 7]
-    for y in range(1, len(palabra)):              #don't look for the first letter
+    for y in range(1, len(palabra)):                   #ignore the first letter
         Loopletter = palabra[y]                        #letter we're checking for
         newIndexList = []                              #the new indexes for the next letter
         for index in firstLetters:                     #check around each letter for the consecutive letter
@@ -77,9 +77,9 @@ def pick_grid():
     return PS
 
 #finding out if the word is in word_file
-def real_word(palabra, cada_palabra):
-    for WoRd in cada_palabra:
-        WoRd = WoRd.strip()
+def real_word(palabra, cada_palabra):                   
+    for WoRd in cada_palabra:                              #check EVERY word...I know it's inefficient, but it's the rule.
+        WoRd = WoRd.strip()                                #get rid of the space
         if palabra == WoRd:
             return True
     return False
@@ -88,7 +88,7 @@ def real_word(palabra, cada_palabra):
 def find_point_number(mon):
     '''finds how many points the valid word is worth'''
     lengh = len(mon)        
-    lenghValue = {3:1, 4:2, 5:3, 6:5, 7:6, 8:8, 9:10}
+    lenghValue = {3:1, 4:2, 5:3, 6:5, 7:6, 8:8, 9:10}      #I'm to lazy to type out 1000 elif statements
     #anticipate errors
     while True:
         try:
@@ -103,10 +103,15 @@ word_file = open('Words.txt', 'r')
 each_word = list(readlines(word_file))
 #playing the game
 while points < 100:
-    playingSpots = pick_grid() 
-    draw_grid(playingSpots)
+    playingSpots = pick_grid()                              #make a new grid...in case there ain't no words 
+    draw_grid(playingSpots)                                 #draw the NEW grid :)
     word = input("Enter a word with more than 2 letters that you find in the grid: ")
-    
+    if word == 'N/A':                                       #if the person wants another grid
+        continue
+    elif word == 'Quit':                                    #if the person is B.O.R.E.D.
+        print("Thanks for playing!")
+        print("You've earned: " + str(points) + " points.")
+        sys.exit()                                          #easiest way to shut-down fast
     if len(word) > 2:                                       #is the word longer than 3 letters?
         if real_word(word, each_word) == True:              #if the word is in the word list
             IN_GRID = is_word_in_grid(word, playingSpots)   #check to see if the word is in the grid
@@ -118,4 +123,8 @@ while points < 100:
             print("That isn't a real word. Try again.")     #try again 
     else:
         print("The word must be at least 3 letters.")       #how many errors can there be again?
+        
+#a friendly final message
+print("Thanks for playing!")
+sys.exit()
 
