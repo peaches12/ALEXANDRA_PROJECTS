@@ -105,7 +105,7 @@ each_word = list(readlines(word_file))
 while points < 100:
     playingSpots = pick_grid()                              #make a new grid...in case there ain't no words 
     draw_grid(playingSpots)                                 #draw the NEW grid :)
-    word = input("Enter a word with more than 2 letters that you find in the grid: ")
+    word = input("Type 'Quit' to end game. Type 'N/A' for another word-grid. Enter a word with more than 2 letters that you find in the grid if you want to play: ")
     if word == 'N/A':                                       #if the person wants another grid
         continue
     elif word == 'Quit':                                    #if the person is B.O.R.E.D.
